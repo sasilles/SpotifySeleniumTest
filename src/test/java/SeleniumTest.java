@@ -23,22 +23,32 @@ public class SeleniumTest {
     @Before
     public void setup() {
 
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--lang=en");
+
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
 
         wait = new WebDriverWait(driver, 10);
     }
 
     @Test
-    public void webTest() {
+    public void loginTest() {
 
+        HomePage homePage = new HomePage(this.driver);
+        LoginPage loginPage = homePage.clickLogin();
+        WebPlayerPage webPlayerPage = loginPage.login();
+
+        String mainText = webPlayerPage.getMainText();
+        Assert.assertTrue(mainText.contains("Joe Komposztor"));
     }
     
     @After
     public void close() {
 
         if (driver != null) {
+            
             driver.quit();
         }
     }
