@@ -13,6 +13,11 @@ class WebPlayerPage extends PageBase {
         super(driver);
     }
 
+    public WebPlayerPage(WebDriver driver, Boolean reload) {
+
+        super(driver, reload, "https://open.spotify.com/");
+    }
+
     public String getMainText() {
 
         WebElement mainDivElement = waitAndReturnElement(mainDiv);

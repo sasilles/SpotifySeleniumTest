@@ -34,14 +34,64 @@ public class SeleniumTest {
     }
 
     @Test
+    public void pageTitleTest() {
+
+        HomePage homePage = new HomePage(this.driver, true);
+        String pageTitle = homePage.getPageTitle();
+        Assert.assertTrue(pageTitle.equals("Listening is everything - Spotify"));
+    }
+
+    @Test
+    public void homePageLoadTest() {
+
+        HomePage homePage = new HomePage(this.driver, true);
+        String bodyText = homePage.getBodyText();
+        Assert.assertTrue(bodyText.contains("SPOTIFY PREMIUM"));
+        Assert.assertTrue(bodyText.contains("GET 3 MONTHS FREE"));
+        Assert.assertTrue(bodyText.contains("SPOTIFY FREE"));
+        Assert.assertTrue(bodyText.contains("GET SPOTIFY FREE"));
+    }
+
+    @Ignore
+    @Test
     public void loginTest() {
 
-        HomePage homePage = new HomePage(this.driver);
+        HomePage homePage = new HomePage(this.driver, true);
         LoginPage loginPage = homePage.clickLogin();
         WebPlayerPage webPlayerPage = loginPage.login();
 
         String mainText = webPlayerPage.getMainText();
         Assert.assertTrue(mainText.contains("Joe Komposztor"));
+    }
+
+    @Test
+    public void logoutTest() {
+
+        HomePage homePage = new HomePage(this.driver, true);
+        LoginPage loginPage = homePage.clickLogin();
+        WebPlayerPage webPlayerPage = loginPage.login();
+        webPlayerPage.getMainText();
+
+        homePage = new HomePage(this.driver, true);
+        homePage.clickLogout();
+
+        String headerText = homePage.getHeaderText();
+        Assert.assertTrue(headerText.contains("Sign up"));
+        Assert.assertTrue(headerText.contains("Log in"));
+    }
+
+    @Test
+    public void changeBirthDateTest() {
+
+        AccountPage accountPage = new AccountPage(this.driver, true);
+        LoginPage loginPage = new LoginPage(this.driver);
+        loginPage.login();
+
+        accountPage.clickEditProfile();
+        accountPage.editBirthDay();
+
+        String bodyText = accountPage.getBodyText();
+        Assert.assertTrue(bodyText.contains("Profile saved"));
     }
     
     @After

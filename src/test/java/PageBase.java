@@ -16,6 +16,14 @@ class PageBase {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, 10);
     }
+
+    public PageBase(WebDriver driver, Boolean reload, String pageToGet) {
+
+        this(driver);
+        
+        if (reload)
+            this.driver.get(pageToGet);
+    }
     
     protected WebElement waitAndReturnElement(By locator) {
 
@@ -23,9 +31,20 @@ class PageBase {
         return this.driver.findElement(locator);
     }
     
+    public String getPageTitle() {
+
+        return driver.getTitle();
+    }
+
+    public String getHeaderText() {
+
+        WebElement headerElement = waitAndReturnElement(By.tagName("header"));
+        return headerElement.getText();
+    }
+
     public String getBodyText() {
 
-        WebElement bodyElement = this.waitAndReturnElement(By.tagName("body"));
+        WebElement bodyElement = waitAndReturnElement(By.tagName("body"));
         return bodyElement.getText();
     }
    

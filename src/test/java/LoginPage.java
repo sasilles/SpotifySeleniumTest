@@ -16,6 +16,11 @@ class LoginPage extends PageBase {
         super(driver);
     }
 
+    public LoginPage(WebDriver driver, Boolean reload) {
+
+        super(driver, reload, "https://accounts.spotify.com/us/login/");
+    }
+
     public WebPlayerPage login() {
 
         WebElement emailFieldElement = waitAndReturnElement(emailField);
