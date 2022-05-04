@@ -17,7 +17,7 @@ class HomePage extends PageBase {
 
     public HomePage(WebDriver driver, Boolean reload) {
 
-        super(driver, reload, "https://www.spotify.com/us/");
+        super(driver, reload, new Config().getUrl("home"));
     }
 
     public LoginPage clickLogin() {

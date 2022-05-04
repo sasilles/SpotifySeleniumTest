@@ -9,6 +9,9 @@ import org.openqa.selenium.support.ui.*;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class SeleniumTest {
 
     public WebElement waitVisibiltyAndFindElement(By locator) {
@@ -52,7 +55,6 @@ public class SeleniumTest {
         Assert.assertTrue(bodyText.contains("GET SPOTIFY FREE"));
     }
 
-    @Ignore
     @Test
     public void loginTest() {
 
@@ -60,8 +62,12 @@ public class SeleniumTest {
         LoginPage loginPage = homePage.clickLogin();
         WebPlayerPage webPlayerPage = loginPage.login();
 
-        String mainText = webPlayerPage.getMainText();
-        Assert.assertTrue(mainText.contains("Joe Komposztor"));
+        webPlayerPage.getMainText();
+
+        AccountPage accountPage = new AccountPage(this.driver, true);
+        String bodyText = accountPage.getBodyText();
+
+        Assert.assertTrue(bodyText.contains(new Config().getEmail()));
     }
 
     @Test
@@ -92,6 +98,49 @@ public class SeleniumTest {
 
         String bodyText = accountPage.getBodyText();
         Assert.assertTrue(bodyText.contains("Profile saved"));
+    }
+
+    @Test
+    public void webPlayerTest() {
+
+        WebPlayerPage webPlayerPage = new WebPlayerPage(this.driver, true);
+        LoginPage loginPage = webPlayerPage.clickLogin();
+        loginPage.login();
+
+        String track = webPlayerPage.reorderPlaylistWithDragAndDrop();
+
+        System.out.println(webPlayerPage.getUrl());
+
+        Assert.assertTrue(track.equals(webPlayerPage.getTrack1()));
+    }
+
+    @Test
+    public void backTest() {
+
+        HomePage homePage = new HomePage(this.driver, true);
+        String prevUrl = homePage.getUrl();
+
+        LoginPage loginPage = homePage.clickLogin();
+        loginPage.getBodyText();
+
+        loginPage.goBack();
+
+        homePage.getBodyText();
+
+        Assert.assertTrue(prevUrl.equals(homePage.getUrl()));
+    }
+
+    @Test
+    public void staticPageTest() {
+
+        HashMap<PageBase, String> pages = new HashMap<PageBase, String>();
+        pages.put(new HomePage(this.driver, true), "SPOTIFY FREE");
+
+        for (Map.Entry<PageBase, String> p : pages.entrySet()) {
+
+            String bodyText = p.getKey().getBodyText();
+            Assert.assertTrue(bodyText.contains(p.getValue()));
+        }
     }
     
     @After

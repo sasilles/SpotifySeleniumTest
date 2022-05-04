@@ -18,16 +18,16 @@ class LoginPage extends PageBase {
 
     public LoginPage(WebDriver driver, Boolean reload) {
 
-        super(driver, reload, "https://accounts.spotify.com/us/login/");
+        super(driver, reload, new Config().getUrl("login"));
     }
 
     public WebPlayerPage login() {
 
         WebElement emailFieldElement = waitAndReturnElement(emailField);
-        emailFieldElement.sendKeys("micax75076@svcache.com");
+        emailFieldElement.sendKeys(new Config().getEmail());
 
         WebElement passwordFieldElement = waitAndReturnElement(passwordField);
-        passwordFieldElement.sendKeys("SpotifySeleniumTest123");
+        passwordFieldElement.sendKeys(new Config().getPassword());
 
         WebElement rememberMeCheckBoxElement = waitAndReturnElement(rememberMeCheckBox);
         rememberMeCheckBoxElement.click();

@@ -30,6 +30,16 @@ class PageBase {
         this.wait.until(ExpectedConditions.elementToBeClickable(locator));
         return this.driver.findElement(locator);
     }
+
+    public String getUrl() {
+        
+        return driver.getCurrentUrl();
+    }
+
+    public void goBack() {
+
+        driver.navigate().back();
+    }
     
     public String getPageTitle() {
 

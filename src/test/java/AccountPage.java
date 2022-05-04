@@ -17,7 +17,7 @@ class AccountPage extends PageBase {
 
     public AccountPage(WebDriver driver, Boolean reload) {
 
-        super(driver, reload, "https://www.spotify.com/us/account/overview/");
+        super(driver, reload, new Config().getUrl("account"));
     }
 
     public void clickEditProfile() {

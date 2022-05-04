@@ -21,6 +21,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.13'
     implementation 'com.google.guava:guava:19.0-jre'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 test {
