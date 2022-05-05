@@ -1,23 +1,20 @@
-import org.junit.*;
-
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.*;
-import org.openqa.selenium.support.ui.*;
 
 class AccountPage extends PageBase {
 
     private By editProfileButton = By.xpath("//li[@id='profile']/a");
+
     private By birthDayInput = By.xpath("//div/input[@id='dob-date']");
-    private By saveProfileButton = By.xpath("//*[@id='__next']/div/div/div[2]/div[2]/div[2]/div/article/section/form/div/button/div[1]");
+    private By saveProfileButton = By.xpath("//body/div[@id='__next']/div/div/div[2]/div[2]/div[2]/div/article/section/form/div/button/div[1]");
 
     public AccountPage(WebDriver driver) {
 
         super(driver);
     }
 
-    public AccountPage(WebDriver driver, Boolean reload) {
+    public AccountPage(WebDriver driver, Boolean load) {
 
-        super(driver, reload, new Config().getUrl("account"));
+        super(driver, load, new Config().getUrl("account"));
     }
 
     public void clickEditProfile() {

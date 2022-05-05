@@ -1,13 +1,10 @@
-import org.junit.*;
-
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.*;
-import org.openqa.selenium.support.ui.*;
 
 class LoginPage extends PageBase {
     
     private By emailField = By.xpath("//div/input[@id='login-username']");
     private By passwordField = By.xpath("//div/input[@id='login-password']");
+    
     private By rememberMeCheckBox = By.cssSelector("label[for='login-remember']");
     private By loginButton = By.xpath("//div/button[@id='login-button']");
 
@@ -16,9 +13,9 @@ class LoginPage extends PageBase {
         super(driver);
     }
 
-    public LoginPage(WebDriver driver, Boolean reload) {
+    public LoginPage(WebDriver driver, Boolean load) {
 
-        super(driver, reload, new Config().getUrl("login"));
+        super(driver, load, new Config().getUrl("login"));
     }
 
     public WebPlayerPage login() {

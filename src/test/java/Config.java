@@ -1,21 +1,18 @@
 import java.io.FileReader;
-import java.util.Iterator;
 import java.util.Map;
-  
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
   
 public class Config 
 {
 
-    private JSONObject cfgJson;
+    private JSONObject configJson;
 
     public Config() {
 
         try {
 
-            cfgJson = (JSONObject) (new JSONParser().parse(new FileReader("config.json")));
+            configJson = (JSONObject) (new JSONParser().parse(new FileReader("config.json")));
 
         } catch (Exception e) {
 
@@ -40,7 +37,7 @@ public class Config
 
     private String getData(String mainKey, String subKey) {
 
-        Map map = (Map) cfgJson.get(mainKey);
+        Map map = (Map) configJson.get(mainKey);
         return (String) map.get(subKey);
     }
 

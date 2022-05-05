@@ -1,10 +1,5 @@
-import org.junit.*;
-
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.support.ui.*;
-
-import java.util.function.*;
 
 class PageBase {
 
@@ -17,12 +12,12 @@ class PageBase {
         this.wait = new WebDriverWait(driver, 10);
     }
 
-    public PageBase(WebDriver driver, Boolean reload, String pageToGet) {
+    public PageBase(WebDriver driver, Boolean load, String pageToLoad) {
 
         this(driver);
         
-        if (reload)
-            this.driver.get(pageToGet);
+        if (load)
+            this.driver.get(pageToLoad);
     }
     
     protected WebElement waitAndReturnElement(By locator) {

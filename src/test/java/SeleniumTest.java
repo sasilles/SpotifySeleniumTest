@@ -1,5 +1,7 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import java.util.Map;
+import java.util.HashMap;
+
+import static org.junit.Assert.*;
 
 import org.junit.*;
 
@@ -9,16 +11,7 @@ import org.openqa.selenium.support.ui.*;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-import java.util.Map;
-import java.util.HashMap;
-
 public class SeleniumTest {
-
-    public WebElement waitVisibiltyAndFindElement(By locator) {
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        return driver.findElement(locator);
-    }
 
     private WebDriver driver;
     private WebDriverWait wait;
@@ -27,7 +20,7 @@ public class SeleniumTest {
     public void setup() {
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--lang=en");
+        options.addArguments("--lang=en"); // It is needed for the webplayer to appear in English
 
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver(options);
@@ -37,7 +30,7 @@ public class SeleniumTest {
     }
 
     @Test
-    public void pageTitleTest() {
+    public void testPageTitleHomePage() {
 
         HomePage homePage = new HomePage(this.driver, true);
         String pageTitle = homePage.getPageTitle();
@@ -45,10 +38,11 @@ public class SeleniumTest {
     }
 
     @Test
-    public void homePageLoadTest() {
+    public void testStaticContentHomePage() {
 
         HomePage homePage = new HomePage(this.driver, true);
         String bodyText = homePage.getBodyText();
+
         Assert.assertTrue(bodyText.contains("SPOTIFY PREMIUM"));
         Assert.assertTrue(bodyText.contains("GET 3 MONTHS FREE"));
         Assert.assertTrue(bodyText.contains("SPOTIFY FREE"));
@@ -56,12 +50,31 @@ public class SeleniumTest {
     }
 
     @Test
-    public void loginTest() {
+    public void testStaticContentMultiplePages() {
+
+        HashMap<String, String> pages = new HashMap<String, String>();
+
+        pages.put(new Config().getUrl("home"), "SPOTIFY FREE");
+        pages.put(new Config().getUrl("support"), "How can we help you?");
+        pages.put(new Config().getUrl("about_us"), "Customer Service and Support");
+
+        for (String url : pages.keySet()) {
+
+            PageBase page = new PageBase(this.driver, true, url);
+            String bodyText = page.getBodyText();
+
+            Assert.assertTrue(bodyText.contains(pages.get(url)));
+        }
+    }
+
+    @Test
+    public void testLogin() {
 
         HomePage homePage = new HomePage(this.driver, true);
         LoginPage loginPage = homePage.clickLogin();
         WebPlayerPage webPlayerPage = loginPage.login();
 
+        // Explicit wait for main text -> needed for webplayer to be loaded completely
         webPlayerPage.getMainText();
 
         AccountPage accountPage = new AccountPage(this.driver, true);
@@ -71,11 +84,13 @@ public class SeleniumTest {
     }
 
     @Test
-    public void logoutTest() {
+    public void testLogout() {
 
         HomePage homePage = new HomePage(this.driver, true);
         LoginPage loginPage = homePage.clickLogin();
         WebPlayerPage webPlayerPage = loginPage.login();
+
+        // Explicit wait for main text -> needed for webplayer to be loaded completely
         webPlayerPage.getMainText();
 
         homePage = new HomePage(this.driver, true);
@@ -87,7 +102,7 @@ public class SeleniumTest {
     }
 
     @Test
-    public void changeBirthDateTest() {
+    public void testBirthDateChangeAccountPage() {
 
         AccountPage accountPage = new AccountPage(this.driver, true);
         LoginPage loginPage = new LoginPage(this.driver);
@@ -101,7 +116,23 @@ public class SeleniumTest {
     }
 
     @Test
-    public void webPlayerTest() {
+    public void testBrowserHistory() {
+
+        WebPlayerPage webPlayerPage = new WebPlayerPage(this.driver, true);
+        String previousUrl = webPlayerPage.getUrl();
+
+        LoginPage loginPage = webPlayerPage.clickLogin();
+        webPlayerPage = loginPage.login();
+
+        SearchPage searchPage = webPlayerPage.clickSearch();
+        searchPage.searchForArtist();
+        searchPage.goBack();
+
+        Assert.assertTrue(previousUrl.equals(webPlayerPage.getUrl()));
+    }
+
+    @Test
+    public void testPlaylistReorderWebPlayer() {
 
         WebPlayerPage webPlayerPage = new WebPlayerPage(this.driver, true);
         LoginPage loginPage = webPlayerPage.clickLogin();
@@ -109,38 +140,7 @@ public class SeleniumTest {
 
         String track = webPlayerPage.reorderPlaylistWithDragAndDrop();
 
-        System.out.println(webPlayerPage.getUrl());
-
         Assert.assertTrue(track.equals(webPlayerPage.getTrack1()));
-    }
-
-    @Test
-    public void backTest() {
-
-        HomePage homePage = new HomePage(this.driver, true);
-        String prevUrl = homePage.getUrl();
-
-        LoginPage loginPage = homePage.clickLogin();
-        loginPage.getBodyText();
-
-        loginPage.goBack();
-
-        homePage.getBodyText();
-
-        Assert.assertTrue(prevUrl.equals(homePage.getUrl()));
-    }
-
-    @Test
-    public void staticPageTest() {
-
-        HashMap<PageBase, String> pages = new HashMap<PageBase, String>();
-        pages.put(new HomePage(this.driver, true), "SPOTIFY FREE");
-
-        for (Map.Entry<PageBase, String> p : pages.entrySet()) {
-
-            String bodyText = p.getKey().getBodyText();
-            Assert.assertTrue(bodyText.contains(p.getValue()));
-        }
     }
     
     @After

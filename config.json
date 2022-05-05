@@ -5,7 +5,9 @@
         "login" : "https://accounts.spotify.com/us/login/",
         "account" : "https://www.spotify.com/us/account/overview/",
         "webplayer" : "https://open.spotify.com/",
-        "search" : "https://open.spotify.com/search"
+        "search" : "https://open.spotify.com/search",
+        "support" : "https://support.spotify.com/us/",
+        "about_us" : "https://www.spotify.com/us/about-us/contact/"
     },
     "userdata" :
     {

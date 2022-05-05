@@ -1,19 +1,23 @@
-import org.junit.*;
-
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.*;
-import org.openqa.selenium.support.ui.*;
 
-class SearchPage extends PageBaseWebPlayer {
+class SearchPage extends PlayerBase {
+
+    private By searchInput = By.xpath("//body/div[@id='main']/div/div[2]/div[1]/header/div[3]/div/div/form/input");
 
     public SearchPage(WebDriver driver) {
 
         super(driver);
     }
 
-    public SearchPage(WebDriver driver, Boolean reload) {
+    public SearchPage(WebDriver driver, Boolean load) {
 
-        super(driver, reload, new Config().getUrl("search"));
+        super(driver, load, new Config().getUrl("search"));
+    }
+
+    public void searchForArtist() {
+
+        WebElement searchInputElement = waitAndReturnElement(searchInput);
+        searchInputElement.sendKeys("car seat headrest");
     }
 
 }
